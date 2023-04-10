@@ -1,0 +1,22 @@
+#!/usr/bin/env Rscript
+library(drda)
+
+#Load gene expression.
+rpm.exp <- read.csv(all_rpm)
+rpm.exp <- rpm.exp[rpm.exp\$Treatment == treatment,7:dim(rpm.exp)[2]]
+rpm.exp <- log2(rpm.exp+1)
+
+#Load dose responses.
+dose.responses <- strsplit(dose_response_fits, split = ' ')[[1]]
+
+#Perform plotting.
+for (fit in sort(dose.responses)) {
+    gene <- strsplit(fit,split = '[.]')[[1]][2]
+    fit.fun <- readRDS(fit)
+    min.exp <- floor(min(rpm.exp[,gene]))
+    max.exp <- ceiling(max(rpm.exp[,gene]))
+    png(paste(gene,'.png',sep = ''),width=960,height=960,res=250)
+    plot(fit.fun,xlim=c(-3,1),ylim=c(min.exp,max.exp),legend_show=FALSE,
+         xlab='log10 Dosage[uM]',ylab='log2 Gene Exp',main=gene)
+    dev.off()
+}
