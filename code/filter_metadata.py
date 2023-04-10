@@ -4,12 +4,12 @@ import pandas as pd
 import numpy as np
 
 #Load metadata and retrieve relevant columns.
-metadata = pd.read_csv('${metadata}')
+metadata = pd.read_csv(metadata)
 metadata = metadata[['SampleID','Treatment','TreatmentDosageTreatTime',
                      'Dosage[uM]']]
     
 #Load expression data.
-all_rpm = pd.read_csv('${all_rpm}')
+all_rpm = pd.read_csv(all_rpm)
 
 #Remove untreated wells. Retain treatments that occur in treatment condition.
 metadata = metadata[(metadata.Treatment != 'none') &
