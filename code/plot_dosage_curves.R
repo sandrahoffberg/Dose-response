@@ -1,13 +1,17 @@
 #!/usr/bin/env Rscript
+
 library(drda)
 
+args <- commandArgs(trailingOnly=TRUE)
+
+
 #Load gene expression.
-rpm.exp <- read.csv(all_rpm)
-rpm.exp <- rpm.exp[rpm.exp\$Treatment == treatment,7:dim(rpm.exp)[2]]
+rpm.exp <- read.csv(args[1])
+rpm.exp <- rpm.exp[rpm.exp\$Treatment == args[2],7:dim(rpm.exp)[2]]
 rpm.exp <- log2(rpm.exp+1)
 
 #Load dose responses.
-dose.responses <- strsplit(dose_response_fits, split = ' ')[[1]]
+dose.responses <- strsplit(args[3], split = ' ')[[1]]
 
 #Perform plotting.
 for (fit in sort(dose.responses)) {

@@ -3,10 +3,10 @@ set -ex
 
 source ./config.sh
 
-python ./filter_metadata.py
+python ./filter_metadata.py ${metadata} ${all_rpm}
 
-Rscript ./fit_dose_response.R
+Rscript ./fit_dose_response.R ${metadata} ${target_list} ${all_rpm} ${treatment}
 
-Rscript ./plot_dosage_curves.R
+Rscript ./plot_dosage_curves.R ${all_rpm} ${treatment} ${dose_response_fits}
 
-Rscript ./gene_plot.R
+Rscript ./gene_plot.R ${all_rpm} ${gene} ${dose_response_fits}

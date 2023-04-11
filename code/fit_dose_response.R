@@ -1,15 +1,17 @@
 #!/usr/bin/env Rscript
 library(drda)
 
+args <- commandArgs(trailingOnly=TRUE)
+
 #Load metadata.
-metadata <- read.csv(metadata)
+metadata <- read.csv(args[1])
     
 #Load targets.
-targets <- read.csv(target_list)[,1]
+targets <- read.csv(args[2])[,1]
     
 #Load gene expression.
-rpm.exp <- read.csv(all_rpm)
-rpm.exp <- rpm.exp[rpm.exp\$Treatment == treatment,
+rpm.exp <- read.csv(args[3])
+rpm.exp <- rpm.exp[rpm.exp\$Treatment == args[3],
                     c("SampleID","Treatment","TreatmentDosageTreatTime",
                       targets)]
 rpm.exp[,targets] <- log2(rpm.exp[,targets]+1)
@@ -35,12 +37,12 @@ for (gene in tx.genes) {
     if(inherits(fit, "try-error")) next
       
     #Output dose-response fits.
-    saveRDS(fit,file = paste(treatment,gene,'RDS',sep='.'))
+    saveRDS(fit,file = paste(args[3],gene,'RDS',sep='.'))
       
     #Store relevant stats.
     min.exp <- floor(min(merged.exp[,gene]))
     max.exp <- ceiling(max(merged.exp[,gene]))
-    tx_by_gene_stats[nrow(tx_by_gene_stats)+1,] <- c(treatment,gene,
+    tx_by_gene_stats[nrow(tx_by_gene_stats)+1,] <- c(args[3],gene,
                                                     min.exp,max.exp,
                                                     coef(fit)[4],
                                                     coef(fit)[2],
@@ -48,4 +50,4 @@ for (gene in tx.genes) {
 }
 
 #Output fitting stats.
-write.csv(tx_by_gene_stats,file = '../results/'treatment'.stats.csv',row.names = FALSE)
+write.csv(tx_by_gene_stats,file = paste('../results/',args[3],'.stats.csv'),row.names = FALSE)
