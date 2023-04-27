@@ -74,22 +74,52 @@ def main(argv = None):
         output_list = " ".join(output_dose_responses)
         
         #generate treatment plot
-        cmd = f'Rscript ./tx_plot.R {args.all_rpm_file} {treatment} "{output_list}"'
+        Path("../results/tx_plot").mkdir(exist_ok=True)
+
+        cmd = f'Rscript ./tx_plot.R {args.all_rpm_file} {treatment} "{output_list}" ../results/tx_plot/'
         logger.info(cmd)
         subprocess.check_call(shlex.split(cmd))
         
-    
-    #Run dosage plots per gene
-    for dose_response_fit in output_dose_responses:
-        dose_response_name = Path(dose_response_fit).name
-        treatment, gene, _ = dose_response_name.split('.')
+        output_pngs = glob.glob(f"../results/tx_plot/{treatment}*.png")
+        output_list = " ".join(output_pngs)
         
-        cmd = f'Rscript ./plot_dosage_curves.R {args.all_rpm_file} {treatment} {dose_response_fit}'
+        cmd = f'Rscript ./create_dose_response_pdf.R "{output_list}" "{treatment}"'
         logger.info(cmd)
         subprocess.check_call(shlex.split(cmd))
 
-    #for 
-    #Rscript ./gene_plot.R ${all_rpm} ${gene} ${dose_response_fits}
+    output_dose_responses = glob.glob(f"../results/*.RDS")
+    genes = set()
+    for dose_response in output_dose_responses:
+      dose_response_name = Path(dose_response).name
+      treatment, gene, _ = dose_response_name.split('.')
+      genes.add(gene)
+    
+    #Run dosage plots per gene
+    for gene in genes:
+        dose_responses = glob.glob(f"../results/*{gene}.RDS")
+        dose_responses = " ".join(dose_responses)
+
+        Path("../results/gene_plot").mkdir(exist_ok=True)
+        
+        cmd = f'Rscript ./gene_plot.R {args.all_rpm_file} {gene} "{dose_responses}" ../results/gene_plot/'
+        logger.info(cmd)
+        subprocess.check_call(shlex.split(cmd))
+        
+        output_pngs = glob.glob(f"../results/gene_plot/{gene}*.png")
+        output_list = " ".join(output_pngs)
+        
+        cmd = f'Rscript ./create_dose_response_pdf.R "{output_list}" "{gene}"'
+        logger.info(cmd)
+        subprocess.check_call(shlex.split(cmd))
+        
+    #aggregate stats
+    stats = glob.glob("../results/*.stats.csv")
+    logger.info(stats)
+
+    stats_dfs = [pd.read_csv(x) for x in stats]
+    out_df = pd.concat(stats_dfs).sort_values(['cmpd','gene'])
+
+    out_df.to_csv('../results/dose_response_fit.csv',index=False)
 
 
 if __name__ == "__main__":

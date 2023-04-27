@@ -36,8 +36,10 @@ for (gene in tx.genes) {
                     data = merged.exp))
     if(inherits(fit, "try-error")) next
       
+    rds_out <- paste(args[4], gene,'RDS',sep='.')
+    rds_out <- paste("../results/", rds_out,sep='')
     #Output dose-response fits.
-    saveRDS(fit,file = paste(args[4],gene,'RDS',sep='.'))
+    saveRDS(fit, file = rds_out)
       
     #Store relevant stats.
     min.exp <- floor(min(merged.exp[,gene]))
