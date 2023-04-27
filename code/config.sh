@@ -19,7 +19,7 @@ fi
 
 
 if [ -z ${2} ]; then
-  metadata=$(find -L ../data -name "metadata")
+  metadata=$(find -L ../data -name "Metadata*")
 else
   metadata=${2}
 fi 
@@ -33,7 +33,7 @@ fi
 
 
 if [ -z ${4} ]; then
-  target_list=$(find -L ../data -name "target*")
+  target_list=$(find -L ../data -name "GeneTarget*")
 else
   target_list=${4}
 fi 

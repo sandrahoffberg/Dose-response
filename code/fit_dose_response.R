@@ -11,7 +11,7 @@ targets <- read.csv(args[2])[,1]
     
 #Load gene expression.
 rpm.exp <- read.csv(args[3])
-rpm.exp <- rpm.exp[rpm.exp\$Treatment == args[3],
+rpm.exp <- rpm.exp[rpm.exp$Treatment == args[3],
                     c("SampleID","Treatment","TreatmentDosageTreatTime",
                       targets)]
 rpm.exp[,targets] <- log2(rpm.exp[,targets]+1)
