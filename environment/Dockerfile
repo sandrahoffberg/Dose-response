@@ -1,4 +1,4 @@
-# hash:sha256:1f50d92de93a1f4a3b5146d85f8c1afccb46e169741929abeae309650f4f95b1
+# hash:sha256:a23d4c6564c6c7766c0cefe5b5274ae657f18c8d3d82002a11146760c11c97b2
 FROM registry.apps.codeocean.com/codeocean/py-r:python3.10-R4.2.2-IRkernel-ubuntu22.04
 
 ARG DEBIAN_FRONTEND=noninteractive
@@ -21,10 +21,5 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys \
         pkg-config=0.29.2-1ubuntu3 \
     && rm -rf /var/lib/apt/lists/*
 
-RUN conda install -y \
-        jupyterlab==3.6.3 \
-        numpy==1.24.2 \
-        pandas==2.0.0 \
-    && conda clean -ya
-
-RUN Rscript -e 'remotes::install_version("drda")'
+RUN echo 'options(repos = c(CRAN = "https://cloud.r-project.org/"), download.file.method = "libcurl")' >> $(Rscript -e 'cat(R.home())')/etc/Rprofile.site
+RUN Rscript -e 'remotes::install_version("drda", "2.0.3")'

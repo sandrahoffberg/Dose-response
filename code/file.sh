@@ -3,7 +3,7 @@ set -ex
 
 source ./config.sh
 
-python ./filter_metadata.py --metadata_file ${metadata} --all_rpm_file ${all_rpm}
+python ./run_dose_response.py --metadata_file ${metadata} --all_rpm_file ${all_rpm} --target_list ${target_list}
 
 Rscript ./fit_dose_response.R ${metadata} ${target_list} ${all_rpm} ${treatment}
 

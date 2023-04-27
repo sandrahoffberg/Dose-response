@@ -11,7 +11,7 @@ targets <- read.csv(args[2])[,1]
     
 #Load gene expression.
 rpm.exp <- read.csv(args[3])
-rpm.exp <- rpm.exp[rpm.exp$Treatment == args[3],
+rpm.exp <- rpm.exp[rpm.exp$Treatment == args[4],
                     c("SampleID","Treatment","TreatmentDosageTreatTime",
                       targets)]
 rpm.exp[,targets] <- log2(rpm.exp[,targets]+1)
@@ -37,7 +37,7 @@ for (gene in tx.genes) {
     if(inherits(fit, "try-error")) next
       
     #Output dose-response fits.
-    saveRDS(fit,file = paste(args[3],gene,'RDS',sep='.'))
+    saveRDS(fit,file = paste(args[4],gene,'RDS',sep='.'))
       
     #Store relevant stats.
     min.exp <- floor(min(merged.exp[,gene]))
@@ -50,4 +50,4 @@ for (gene in tx.genes) {
 }
 
 #Output fitting stats.
-write.csv(tx_by_gene_stats,file = paste('../results/',args[3],'.stats.csv'),row.names = FALSE)
+write.csv(tx_by_gene_stats,file = paste('../results/',args[4],'.stats.csv', sep=''),row.names = FALSE)

@@ -8,6 +8,7 @@ import logging
 from pathlib import Path
 import shlex
 import subprocess
+import glob
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
@@ -68,12 +69,15 @@ def main(argv = None):
         logger.info(cmd)
         subprocess.check_call(shlex.split(cmd))
         
+        output_dose_responses = glob.glob(f"../results/{treatment}.*.RDS")
+
+        output_list = " ".join(output_dose_responses)
+        
         #generate treatment plot
-        cmd = f'Rscript ./tx_plot.R {args.all_rpm_file} {treatment} ../results/{treatment}.stats.csv'
+        cmd = f'Rscript ./tx_plot.R {args.all_rpm_file} {treatment} "{output_list}"'
         logger.info(cmd)
         subprocess.check_call(shlex.split(cmd))
         
-    output_dose_responses = glob.glob("../results/{treatment}.*.RDS")
     
     #Run dosage plots per gene
     for dose_response_fit in output_dose_responses:
