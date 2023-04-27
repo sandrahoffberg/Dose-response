@@ -1,4 +1,4 @@
-# hash:sha256:3f2330696c4130b9141f5fb5052b52f876b97767872e644f4f543c8a09008f9c
+# hash:sha256:1f50d92de93a1f4a3b5146d85f8c1afccb46e169741929abeae309650f4f95b1
 FROM registry.apps.codeocean.com/codeocean/py-r:python3.10-R4.2.2-IRkernel-ubuntu22.04
 
 ARG DEBIAN_FRONTEND=noninteractive
@@ -26,3 +26,5 @@ RUN conda install -y \
         numpy==1.24.2 \
         pandas==2.0.0 \
     && conda clean -ya
+
+RUN Rscript -e 'remotes::install_version("drda")'
