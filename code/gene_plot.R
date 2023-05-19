@@ -17,7 +17,7 @@ dose.responses <- strsplit(args[3],split = ' ')[[1]]
 for (fit in sort(dose.responses)) {
     
     treatment <- strsplit(fit,split = '[.]')[[1]][3]
-    treatment <- sub("/results/", "", treatment)
+    treatment <- basename(treatment)
     
     fit.fun <- readRDS(fit)
     min.exp <- floor(min(rpm.exp[rpm.exp$Treatment == treatment,args[2]]))

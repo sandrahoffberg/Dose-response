@@ -27,11 +27,11 @@ def main(argv = None):
         return 0
 
     if not args.metadata_file.is_file():
-        logger.error(f"Missing metadata: {args.metadata}")
+        logger.error(f"Missing metadata: {args.metadata_file}")
         return 1
 
     if not args.all_rpm_file.is_file():
-        logger.error(f"Missing all_rpm: {args.all_rpm}")
+        logger.error(f"Missing all_rpm: {args.all_rpm_file}")
         return 1
 
     if not args.target_list.is_file():
@@ -39,6 +39,12 @@ def main(argv = None):
         return 1
 
     
+    sample_name=args.all_rpm_file.name.replace('.rpm.exp.csv','')
+    output_dir=Path(f"../results/{sample_name}")
+    output_dir.mkdir()
+
+    logging.info(f"Output dir: {output_dir}")
+
     #Load metadata and retrieve relevant columns.
     metadata = pd.read_csv(args.metadata_file)
     metadata = metadata[['SampleID','Treatment','TreatmentDosageTreatTime',
@@ -58,36 +64,36 @@ def main(argv = None):
     #Log normalize dosage.
     metadata['Dosage[uM]'] = np.log10(metadata['Dosage[uM]'])
 
-    filtered_metadata_file = "../results/metadata.reformatted.csv"
+    filtered_metadata_file = f"{output_dir}/metadata.reformatted.csv"
     
     #Output reformatted metadata to CSV.
-    metadata.to_csv("../results/metadata.reformatted.csv",index=False)
+    metadata.to_csv(f"{output_dir}/metadata.reformatted.csv",index=False)
     
     #Run dosage plots per treatment type
     for treatment in set(metadata['Treatment']): 
-        cmd = f'Rscript ./fit_dose_response.R {filtered_metadata_file} {args.target_list} {args.all_rpm_file} {treatment}'
+        cmd = f'Rscript ./fit_dose_response.R {filtered_metadata_file} {args.target_list} {args.all_rpm_file} {treatment} {output_dir}/'
         logger.info(cmd)
         subprocess.check_call(shlex.split(cmd))
         
-        output_dose_responses = glob.glob(f"../results/{treatment}.*.RDS")
+        output_dose_responses = glob.glob(f"{output_dir}/{treatment}.*.RDS")
 
         output_list = " ".join(output_dose_responses)
         
         #generate treatment plot
-        Path("../results/tx_plot").mkdir(exist_ok=True)
+        Path(f"{output_dir}/tx_plot").mkdir(exist_ok=True)
 
-        cmd = f'Rscript ./tx_plot.R {args.all_rpm_file} {treatment} "{output_list}" ../results/tx_plot/'
+        cmd = f'Rscript ./tx_plot.R {args.all_rpm_file} {treatment} "{output_list}" "{output_dir}/tx_plot/"'
         logger.info(cmd)
         subprocess.check_call(shlex.split(cmd))
         
-        output_pngs = glob.glob(f"../results/tx_plot/{treatment}*.png")
+        output_pngs = glob.glob(f"{output_dir}/tx_plot/{treatment}*.png")
         output_list = " ".join(output_pngs)
         
-        cmd = f'Rscript ./create_dose_response_pdf.R "{output_list}" "{treatment}"'
+        cmd = f'Rscript ./create_dose_response_pdf.R "{output_list}" "{treatment}" "{output_dir}/"'
         logger.info(cmd)
         subprocess.check_call(shlex.split(cmd))
 
-    output_dose_responses = glob.glob(f"../results/*.RDS")
+    output_dose_responses = glob.glob(f"{output_dir}/*.RDS")
     genes = set()
     for dose_response in output_dose_responses:
       dose_response_name = Path(dose_response).name
@@ -96,30 +102,30 @@ def main(argv = None):
     
     #Run dosage plots per gene
     for gene in genes:
-        dose_responses = glob.glob(f"../results/*{gene}.RDS")
+        dose_responses = glob.glob(f"{output_dir}/*{gene}.RDS")
         dose_responses = " ".join(dose_responses)
 
-        Path("../results/gene_plot").mkdir(exist_ok=True)
+        Path(f"{output_dir}/gene_plot").mkdir(exist_ok=True)
         
-        cmd = f'Rscript ./gene_plot.R {args.all_rpm_file} {gene} "{dose_responses}" ../results/gene_plot/'
+        cmd = f'Rscript ./gene_plot.R {args.all_rpm_file} {gene} "{dose_responses}" "{output_dir}/gene_plot/"'
         logger.info(cmd)
         subprocess.check_call(shlex.split(cmd))
         
-        output_pngs = glob.glob(f"../results/gene_plot/{gene}*.png")
+        output_pngs = glob.glob(f"{output_dir}/gene_plot/{gene}*.png")
         output_list = " ".join(output_pngs)
         
-        cmd = f'Rscript ./create_dose_response_pdf.R "{output_list}" "{gene}"'
+        cmd = f'Rscript ./create_dose_response_pdf.R "{output_list}" "{gene}" "{output_dir}/"'
         logger.info(cmd)
         subprocess.check_call(shlex.split(cmd))
         
     #aggregate stats
-    stats = glob.glob("../results/*.stats.csv")
+    stats = glob.glob(f"{output_dir}/*.stats.csv")
     logger.info(stats)
 
     stats_dfs = [pd.read_csv(x) for x in stats]
     out_df = pd.concat(stats_dfs).sort_values(['cmpd','gene'])
 
-    out_df.to_csv('../results/dose_response_fit.csv',index=False)
+    out_df.to_csv(f'{output_dir}/dose_response_fit.csv',index=False)
 
 
 if __name__ == "__main__":

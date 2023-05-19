@@ -3,15 +3,21 @@ library(drda)
 
 args <- commandArgs(trailingOnly=TRUE)
 
+metadata_file <- args[1]
+target_file <- args[2]
+gene_expression_file <- args[3]
+treatment_type <- args[4]
+output_dir <- args[5]
+
 #Load metadata.
-metadata <- read.csv(args[1])
+metadata <- read.csv(metadata_file)
     
 #Load targets.
-targets <- read.csv(args[2])[,1]
+targets <- read.csv(target_file)[,1]
     
 #Load gene expression.
-rpm.exp <- read.csv(args[3])
-rpm.exp <- rpm.exp[rpm.exp$Treatment == args[4],
+rpm.exp <- read.csv(gene_expression_file)
+rpm.exp <- rpm.exp[rpm.exp$Treatment == treatment_type,
                     c("SampleID","Treatment","TreatmentDosageTreatTime",
                       targets)]
 rpm.exp[,targets] <- log2(rpm.exp[,targets]+1)
@@ -36,8 +42,8 @@ for (gene in tx.genes) {
                     data = merged.exp))
     if(inherits(fit, "try-error")) next
       
-    rds_out <- paste(args[4], gene,'RDS',sep='.')
-    rds_out <- paste("../results/", rds_out,sep='')
+    rds_out <- paste(treatment_type, gene,'RDS',sep='.')
+    rds_out <- paste(output_dir, rds_out,sep='')
     #Output dose-response fits.
     saveRDS(fit, file = rds_out)
       
@@ -52,4 +58,4 @@ for (gene in tx.genes) {
 }
 
 #Output fitting stats.
-write.csv(tx_by_gene_stats,file = paste('../results/',args[4],'.stats.csv', sep=''),row.names = FALSE)
+write.csv(tx_by_gene_stats,file = paste(output_dir,treatment_type,'.stats.csv', sep=''),row.names = FALSE)

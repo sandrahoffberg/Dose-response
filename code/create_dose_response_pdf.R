@@ -12,6 +12,6 @@ plots <- lapply(ll <- strsplit(args[1],split = ' ')[[1]], function(x){
   rasterGrob(img, interpolate = FALSE)
 })
 
-ggsave(paste("../results/", args[2], '.pdf', sep=''), marrangeGrob(grobs=plots,
+ggsave(paste(args[3], args[2], '.pdf', sep=''), marrangeGrob(grobs=plots,
                                     layout_matrix = matrix(1:16,  nrow = 4,
                                     ncol=4, byrow=TRUE)))
