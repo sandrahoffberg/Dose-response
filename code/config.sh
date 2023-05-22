@@ -26,14 +26,15 @@ fi
 
 
 if [ -z ${3} ]; then
-  treatment=
-else
-  treatment=${3}
-fi 
-
-
-if [ -z ${4} ]; then
   target_list=$(find -L ../data -name "*arget*")
 else
-  target_list=${4}
+  target_list=${3}
 fi 
+
+
+
+# if [ -z ${3} ]; then
+#   treatment=
+# else
+#   treatment=${3}
+# fi 
