@@ -33,21 +33,7 @@ fi
 
 
 if [ -z ${4} ]; then
-  target_list=$(find -L ../data -name "GeneTarget*")
+  target_list=$(find -L ../data -name "*arget*")
 else
   target_list=${4}
-fi 
-
-
-if [ -z ${5} ]; then
-  dose_response_fits=$(find -L ../data -name "dose")
-else
-  dose_response_fits=${5}
-fi 
-
-
-if [ -z ${6} ]; then
-  gene=
-else
-  gene=${6}
 fi 
