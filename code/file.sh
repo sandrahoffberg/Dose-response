@@ -8,5 +8,5 @@ if [ "${run_capsule}" == "yes" ]; then
     python ./run_dose_response.py --metadata_file ${metadata} --all_rpm_file ${all_rpm} --target_list ${target_list}
 
 else
-    echo "Dose Response capsule was not run" > ../results/dose_response_not_run.txt
+    echo "Dose Response capsule was not run" > ../results/${base_name}_dose_response_not_run.txt
 fi

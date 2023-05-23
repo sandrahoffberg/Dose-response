@@ -23,7 +23,7 @@ if [ -z ${2} ]; then
 else
   all_rpm=${2}
 fi 
-
+base_name=$(basename ${all_rpm} .rpm.exp.csv)
 
 if [ -z ${3} ]; then
   metadata=$(find -L ../data -name "Metadata*")
