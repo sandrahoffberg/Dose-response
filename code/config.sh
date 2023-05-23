@@ -11,24 +11,31 @@ else
 fi
 
 
-if [ -z ${1} ]; then
-  all_rpm=$(find -L ../data -name "*rpm*")
+if [ "${1}" == "yes" ]; then 
+  run_capsule="yes"
 else
-  all_rpm=${1}
-fi 
+  run_capsule="no"
+fi
 
 
 if [ -z ${2} ]; then
-  metadata=$(find -L ../data -name "Metadata*")
+  all_rpm=$(find -L ../data -name "*rpm*")
 else
-  metadata=${2}
+  all_rpm=${2}
 fi 
 
 
 if [ -z ${3} ]; then
+  metadata=$(find -L ../data -name "Metadata*")
+else
+  metadata=${3}
+fi 
+
+
+if [ -z ${4} ]; then
   target_list=$(find -L ../data -name "*arget*")
 else
-  target_list=${3}
+  target_list=${4}
 fi 
 
 
