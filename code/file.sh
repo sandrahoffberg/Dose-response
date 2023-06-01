@@ -2,6 +2,8 @@
 set -ex
 
 source ./config.sh
+source ./pipeline_config.sh
+
 
 if [ "${run_capsule}" == "yes" ]; then
 
