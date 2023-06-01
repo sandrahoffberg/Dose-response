@@ -1,2 +1,3 @@
 metadata_version: 1
 name: Dose response Fulcrum
+description: Produces dose response curves as in Nextflow-Tower pipeline.

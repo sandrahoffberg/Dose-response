@@ -2,7 +2,7 @@
 
 ### How this capsule works: 
 
-This is the fourth capsule in the pipeline. <br>
+This is the fourth capsule in the pipeline. Running this capsule is optional. <br>
 Format and filter metadata. Only included treated wells with multiple dosages. <br>
 Then it fits dose-response curves. <br> 
 Then plots dose response curves for every gene in each treatment.
@@ -20,9 +20,7 @@ Then plots dose response curves for every gene in each treatment.
 
 ### App Panel Parameters: 
 
+- Run this capsule? (yes/no)
 - Path to RPM file
 - Metadata file
-- Treatment
 - Target list
-- Dose response fits
-- gene
