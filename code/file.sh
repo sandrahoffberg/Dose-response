@@ -2,8 +2,10 @@
 set -ex
 
 source ./config.sh
-source ../data/pipeline_config.sh
 
+if [ -f ../data/pipeline_config.sh ]; then
+    source ../data/pipeline_config.sh
+fi
 
 if [ "${run_capsule}" == "yes" ]; then
 
