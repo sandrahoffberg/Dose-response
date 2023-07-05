@@ -11,37 +11,23 @@ else
 fi
 
 
-if [ "${1}" == "yes" ]; then 
-  run_capsule="yes"
-else
-  run_capsule="no"
-fi
 
+if [ -z ${1} ]; then
+  all_rpm=$(find -L ../data -name "*counts.csv")
+else
+  all_rpm=${1}
+fi 
+base_name=$(basename ${all_rpm} ".csv")
 
 if [ -z ${2} ]; then
-  all_rpm=$(find -L ../data -name "*rpm*")
+  metadata=$(find -L ../data -name "*etadata*")
 else
-  all_rpm=${2}
+  metadata=${2}
 fi 
-base_name=$(basename ${all_rpm} .rpm.exp.csv)
-
-if [ -z ${3} ]; then
-  metadata=$(find -L ../data -name "Metadata*")
-else
-  metadata=${3}
-fi 
-
-
-if [ -z ${4} ]; then
-  target_list=$(find -L ../data -name "*arget*")
-else
-  target_list=${4}
-fi 
-
 
 
 # if [ -z ${3} ]; then
-#   treatment=
+#   target_list=$(find -L ../data -name "*arget*")
 # else
-#   treatment=${3}
+#   target_list=${3}
 # fi 

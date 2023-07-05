@@ -1,3 +1,5 @@
 metadata_version: 1
-name: Dose response Fulcrum
-description: Produces dose response curves as in Nextflow-Tower pipeline.
+name: Dose response
+description: Produces dose response curves
+authors:
+- name: Sandra Hoffberg
