@@ -10,22 +10,13 @@ Then plots dose response curves for every gene in each treatment.
 
 ## Input: 
 
-- {sample}.rpm.exp.csv from the Seurat capsule
-- Metadata file
-- Gene target list
 
 
 ## App Panel Parameters: 
 
-- Path to RPM file
-- Metadata file
-- Target list
+
 
 ## Output: 
-- **/gene_plot** with png files
-- **/tx_plot** with png files
-- Various output files in pdf and csv format including dose_response_fit.csv and metadata.reformatted.csv
-
 
 
 <hr>

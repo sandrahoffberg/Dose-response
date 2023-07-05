@@ -44,9 +44,9 @@ def main(argv=None):
         logger.error(f"Missing all_rpm: {args.all_rpm_file}")
         return 1
 
-    if not args.target_list.is_file():
-        logger.error(f"Missing target_list: {args.target_list}")
-        return 1
+#    if not args.target_list.is_file():
+#        logger.error(f"Missing target_list: {args.target_list}")
+#        return 1
 
     sample_name = args.all_rpm_file.name.replace(".rpm.exp.csv", "")
     output_dir = Path(f"../results/{sample_name}")
@@ -57,7 +57,8 @@ def main(argv=None):
     # Load metadata and retrieve relevant columns.
     metadata = pd.read_csv(args.metadata_file)
     metadata = metadata[
-        ["SampleID", "Treatment", "TreatmentDosageTreatTime", "Dosage[uM]"]
+#        ["SampleID", "Treatment", "TreatmentDosageTreatTime", "Dosage[uM]"]
+        ["response", "dose", "log_dose", "weight"]
     ]
 
     # Load expression data.
@@ -83,7 +84,7 @@ def main(argv=None):
 
     # Run dosage plots per treatment type
     for treatment in set(metadata["Treatment"]):
-        cmd = f"Rscript ./fit_dose_response.R {filtered_metadata_file} {args.target_list} {args.all_rpm_file} {treatment} {output_dir}/"
+        cmd = f"Rscript ./fit_dose_response.R {filtered_metadata_file}  {args.all_rpm_file} {treatment} {output_dir}/" #{args.target_list}
         logger.info(cmd)
         subprocess.check_call(shlex.split(cmd))
 
