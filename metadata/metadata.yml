@@ -1,5 +1,8 @@
 metadata_version: 1
 name: Dose response
-description: Produces dose response curves
+description: Produces dose response curves that describe the magnitude of the response
+  as a function of exposure (dose) to a condition after a certain exposure time.
+tags:
+- Expression
 authors:
 - name: Sandra Hoffberg

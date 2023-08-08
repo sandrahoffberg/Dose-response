@@ -1,5 +1,5 @@
-# hash:sha256:ffd282fed10285034170e763b9c2ee4f09e96fb279a2208f3e332ffbaae78a52
-FROM registry.apps.codeocean.com/codeocean/py-r:python3.10-R4.2.2-IRkernel-ubuntu22.04
+# hash:sha256:6bbe8b70b4de5fc8c25055c82157f01c5116efdb8a22626ad193cbe0a3f234e1
+FROM registry.apps.codeocean.com/codeocean/py-r:python3.10.12-R4.2.3-IRkernel-ubuntu22.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -17,13 +17,9 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys \
     && apt-get install -y --no-install-recommends \
         build-essential=12.9ubuntu3 \
         libgit2-dev=1.1.0+dfsg.1-4.1build1 \
-        libssl-dev=3.0.2-0ubuntu1.8 \
+        libssl-dev=3.0.2-0ubuntu1.10 \
         pkg-config=0.29.2-1ubuntu3 \
     && rm -rf /var/lib/apt/lists/*
-
-RUN pip install -U --no-cache-dir \
-    black==23.3.0 \
-    isort==5.12.0
 
 RUN echo 'options(repos = c(CRAN = "https://cloud.r-project.org/"), download.file.method = "libcurl")' >> $(Rscript -e 'cat(R.home())')/etc/Rprofile.site
 RUN Rscript -e 'remotes::install_version("drda", "2.0.3")' \
