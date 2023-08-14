@@ -4,5 +4,6 @@ description: Produces dose response curves that describe the magnitude of the re
   as a function of exposure (dose) to a condition after a certain exposure time.
 tags:
 - Expression
+- Visualization
 authors:
 - name: Sandra Hoffberg
