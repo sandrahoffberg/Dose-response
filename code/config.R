@@ -6,7 +6,7 @@ args <- commandArgs(trailingOnly=TRUE)
 
 
 if (length(args) == 0 | nchar(args[1])==0) {
-    response_data <- list.files(path = "../data", pattern = "*response*.csv", full.names = TRUE, recursive=TRUE)
+    response_data <- list.files(path = "../data", pattern = ".*response.*csv", full.names = TRUE, recursive=TRUE)
 } else {
     response_data <- args[1]
 }
