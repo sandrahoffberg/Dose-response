@@ -1,4 +1,4 @@
-# hash:sha256:6bbe8b70b4de5fc8c25055c82157f01c5116efdb8a22626ad193cbe0a3f234e1
+# hash:sha256:c3e5351765258de7136ecba27051be99e012a15dead97df2d33e8fe9483511f5
 FROM registry.apps.codeocean.com/codeocean/py-r:python3.10.12-R4.2.3-IRkernel-ubuntu22.04
 
 ARG DEBIAN_FRONTEND=noninteractive
@@ -16,6 +16,8 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
         build-essential=12.9ubuntu3 \
+        ca-certificates \
+        git \
         libgit2-dev=1.1.0+dfsg.1-4.1build1 \
         libssl-dev=3.0.2-0ubuntu1.10 \
         pkg-config=0.29.2-1ubuntu3 \
