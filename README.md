@@ -8,12 +8,12 @@ This capsule uses the R package drda to fit logistic functions to observed dose-
 data (gene expression) and evaluate goodness-of-fit measures.  This capsule can accommodate a single treatment per run. 
 
 ## Input: 
-In the **/data** directory, a CSV file with the sample in the first column, dosage in the second column, and the expression of each gene in subsequent columns.  
+In the **/data** directory, a CSV file with the sample in the first column, dosage in the second column, and the expression of each gene in subsequent columns.   
 
 
 ## App Panel Parameters: 
-Path to input CSV file 
-
+Dose response data file
+- Path to input CSV file. If not provided, the first file in the data directory matching the \*response\*.csv pattern will be used. [default: None]
 
 ## Output: 
 
